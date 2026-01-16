@@ -1,19 +1,19 @@
 name: Build Windows Exe
 
-on: [push]  # Run this every time I upload code
+on: [push]
 
 jobs:
   build:
-    runs-on: windows-latest  # <--- MAGIC: We are renting a Windows PC!
+    runs-on: windows-latest
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4       # Updated to v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5   # Updated to v5
       with:
-        python-version: '3.9'
+        python-version: '3.11'        # Updated to a newer Python
 
     - name: Install Libraries
       run: |
@@ -21,10 +21,11 @@ jobs:
 
     - name: Build EXE
       run: |
+        # Make sure this matches your filename exactly!
         pyinstaller --onefile final_chat.py
 
     - name: Upload EXE
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # <--- THIS WAS THE FIX
       with:
         name: FinalChat-Windows
         path: dist/final_chat.exe
