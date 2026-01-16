@@ -1,0 +1,30 @@
+name: Build Windows Exe
+
+on: [push]  # Run this every time I upload code
+
+jobs:
+  build:
+    runs-on: windows-latest  # <--- MAGIC: We are renting a Windows PC!
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Libraries
+      run: |
+        pip install pyinstaller
+
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile final_chat.py
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v3
+      with:
+        name: FinalChat-Windows
+        path: dist/final_chat.exe
